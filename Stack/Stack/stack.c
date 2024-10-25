@@ -10,7 +10,8 @@ typedef struct StackElement {
 } StackElement;
 
 struct Stack {
-    StackElement* head;
+    StackElement* front;
+    StackElement* back;
 };
 
 void pop(Stack* stack) {
