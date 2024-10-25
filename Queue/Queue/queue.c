@@ -5,29 +5,48 @@
 
 typedef struct QueueElement {
     int value;
-    struct QueueElement* previous;
+    struct QueueElement* next;
 } QueueElement;
 
-struct Queue {
-    QueueElement * front;
-    QueueElement * back;
-};
+typedef struct Queue {
+    QueueElement* front; 
+    QueueElement* back;  
+} Queue;
 
-void Dequeue(Queue* queue) {
-    QueueElement* tmp = queue->front;
-    queue->front = queue->front->previous;
-    free(tmp);
+Queue* createQueue() {
+    Queue* queue = (Queue*)malloc(sizeof(Queue));
+    queue->front = queue->back = NULL;
+    return queue;
 }
 
-/*Stack* createStack() {
-    return (Stack*)calloc(1, sizeof(Stack));
-*/
-
-void Enqueue(Queue* queue, int value) {
-    QueueElement* element = malloc(sizeof(QueueElement));
-    assert(element != NULL);
-    element->previous = NULL;
+void enqueue(Queue* queue, int value) {
+    QueueElement* element = (QueueElement*)malloc(sizeof(QueueElement));
     element->value = value;
-    queue->back->previous = element;
-    queue->back = element;
+    element->next = NULL;
+
+    if (queue->back == NULL) {
+        queue->front = queue->back = element;
+    }
+    else {
+
+        queue->back->next = element;
+        queue->back = element;
+    }
+}
+
+void dequeue(Queue* queue) {
+    if (queue->front == NULL) {
+        printf("Очередь пуста\n");
+        return;
+    }
+
+    QueueElement* tmp = queue->front;
+    queue->front = queue->front->next;
+
+
+    if (queue->front == NULL) {
+        queue->back = NULL;
+    }
+
+    free(tmp);
 }
