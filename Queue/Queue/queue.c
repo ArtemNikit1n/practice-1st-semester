@@ -33,18 +33,16 @@ void enqueue(Queue* queue, int value) {
     }
 }
 
-void dequeue(Queue* queue) {
+int dequeue(Queue* queue) {
     if (queue->front == NULL) { 
-        return;
+        return -1;
     }
-
+    int value = queue->front->value;
     QueueElement* tmp = queue->front;
     queue->front = queue->front->next;
-
-
     if (queue->front == NULL) {
         queue->back = NULL;
     }
-
     free(tmp);
+    return value;
 }
