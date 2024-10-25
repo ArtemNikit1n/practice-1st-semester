@@ -15,7 +15,8 @@ typedef struct Queue {
 
 Queue* createQueue() {
     Queue* queue = (Queue*)malloc(sizeof(Queue));
-    queue->front = queue->back = NULL;
+    queue->front = NULL;
+    queue->back = NULL;
     return queue;
 }
 
@@ -25,7 +26,8 @@ void enqueue(Queue* queue, int value) {
     element->next = NULL;
 
     if (queue->back == NULL) {
-        queue->front = queue->back = element;
+        queue->front = element; 
+        queue->back = element;
     }
     else {
 
@@ -35,7 +37,7 @@ void enqueue(Queue* queue, int value) {
 }
 
 void dequeue(Queue* queue) {
-    if (queue->front == NULL) {
+    if (queue->front == NULL) { 
         return;
     }
 

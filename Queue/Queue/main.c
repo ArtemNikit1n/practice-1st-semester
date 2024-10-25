@@ -3,6 +3,5 @@
 #include "queue.h"
 
 int main(void) {
-    Queue* queue = createStack();
-    push(queue, 1);
+    Queue* queue = createQueue();
 }
