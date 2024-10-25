@@ -36,7 +36,6 @@ void enqueue(Queue* queue, int value) {
 
 void dequeue(Queue* queue) {
     if (queue->front == NULL) {
-        printf("Очередь пуста\n");
         return;
     }
 
