@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#include "stack.h"
+#include "queue.h"
 
 int main(void) {
-    Stack* stack = createStack();
-    push(stack, 1);
+    Queue* queue = createStack();
+    push(queue, 1);
 }
