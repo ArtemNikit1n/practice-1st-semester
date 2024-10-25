@@ -2,8 +2,8 @@
 
 typedef struct Queue Queue;
 
-Queue* createStack();
+//Stack* createStack();
 
-void Dequeue(Queue* queue, int value);
+void enqueue(Queue * queue, int value);
 
-void Enqueue(Queue* queue);
+void pop(Queue* queue);
