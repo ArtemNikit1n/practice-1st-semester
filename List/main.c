@@ -5,5 +5,6 @@
 
 int main(void) {
     bool errorCode = false;
+    List* list = createList(&errorCode);
     return errorCode;
 }

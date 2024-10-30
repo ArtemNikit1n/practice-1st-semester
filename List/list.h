@@ -4,7 +4,9 @@ typedef struct List List;
 
 void deleteList(List ** list);
 
-List * createList();
+typedef struct ListElement* Posithion;
+
+List * createList(bool *errorCode);
 
 void add(List* list, struct ListElement* position, int value);
 
