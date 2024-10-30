@@ -9,14 +9,26 @@ typedef struct ListElement {
     struct ListElement* next;
 } ListElement;
 
+struct List {
+    ListElement* head;
+};
+
+void deleteList(List** listDoublePointer) {
+    List* stack = *listDoublePointer;
+    while (stack->head != NULL) {
+        ListElement* next = stack->head->next;
+        free(stack->head);
+        stack->head = next;
+    }
+    free(stack);
+    *listDoublePointer = NULL;
+}
+
 void pop(List * list, ListElement * position, int * errorCode) {
     ListElement * temp = position->next;
     position->next = position->next->next;
     free(temp);
 }
-struct List {
-    ListElement* head;
-};
 
 List* createList(bool* errorCode) {
     ListElement* guardian = calloc(1, sizeof(ListElement));

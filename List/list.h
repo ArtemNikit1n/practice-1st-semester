@@ -2,7 +2,7 @@
 
 typedef struct List List;
 
-void deleteList(List ** list);
+void deleteList(List **listDoublePointer);
 
 typedef struct ListElement* Posithion;
 

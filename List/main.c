@@ -6,5 +6,7 @@
 int main(void) {
     bool errorCode = false;
     List* list = createList(&errorCode);
+    deleteList(list);
+
     return errorCode;
 }
