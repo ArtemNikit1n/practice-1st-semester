@@ -44,3 +44,13 @@ List* createList(bool* errorCode) {
     list->head = guardian;
     return list;
 }
+
+void add(List* list, Posithion position, int value) {
+    ListElement* new = calloc(1, sizeof(ListElement));
+    if (new == NULL) {
+        return;
+    }
+    ListElement* temp = position->next->next;
+    position->next = new;
+    new->next = temp;
+}
