@@ -1,1 +1,4 @@
-# Practice-25.10.24
+# practice-1st-semester
+- Stack
+- Queue
+- List
