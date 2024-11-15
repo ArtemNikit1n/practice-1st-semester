@@ -1,8 +1,8 @@
 #pragma once
 
 typedef struct {
-    char* value;
-    int key;
+    char value;
+    int frequency;
 } NodeValue;
 
 typedef struct Node Node;

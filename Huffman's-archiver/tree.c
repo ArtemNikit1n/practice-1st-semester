@@ -53,7 +53,7 @@ Node* getRightChild(Node* node, bool* errorCode) {
 
 NodeValue getValue(Node* node, bool* errorCode) {
     if (node == NULL) {
-        NodeValue incorrectNodeValues = { .key = -1, .value = NULL };
+        NodeValue incorrectNodeValues = { .frequency = -1, .value = NULL };
         *errorCode = true;
         return incorrectNodeValues;
     }
