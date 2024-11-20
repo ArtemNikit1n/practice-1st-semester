@@ -141,12 +141,28 @@ int main(void) {
         return errorCode;
     }
 
-    printNode(rootNode, &errorCode);
-
     CodeEntry codeTable[256] = { 0 };
     bool currentCode[256] = { false };
     writeToCodeTable(rootNode, currentCode, 0, codeTable, &errorCode);
     if (errorCode) {
         return errorCode;
+    }
+    
+    bool buffer[8] = {false};
+    int bufferIndex = 0;
+    for (int i = 0; string[i] != '\0'; ++i) {
+        CodeEntry entry = codeTable[string[i]];
+        for (int j = 0; j < entry.length; ++j) {
+            buffer[bufferIndex] = entry.code[j];
+            ++bufferIndex;
+            if (bufferIndex == 8) {
+                unsigned char bufferValue = '\0';
+                for (int k = 0; k < 8; ++k) {
+                    bufferValue |= buffer[k] << k;
+                }
+                printf("0x%02X ", bufferValue);
+                bufferIndex = 0;
+            }
+        }
     }
 }
