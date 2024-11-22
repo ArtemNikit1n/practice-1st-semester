@@ -121,6 +121,22 @@ void writeToCodeTable(Node* currentNode, bool* currentCode, int currentCodeLengt
     writeToCodeTable(getRightChild(currentNode, errorCode), currentCode, currentCodeLength + 1, codeTable, errorCode);
 }
 
+void writeInt(FILE* file, int value) {
+    char* array = &value;
+    for (int i = 0; i < 4; ++i) {
+        fputc(array[i], file);
+    }
+}
+
+int readInt(FILE* file) {
+    char array[4] = { '\0' };
+    for (int i = 0; i < 4; ++i) {
+        array[i] = fgetc(file);
+    }
+    int value = *((int*)array);
+    return value;
+}
+
 int main(void) {
     const char* string = "abccccccdeeee";
     int arrayOfFrequencies[256] = { 0 };
@@ -147,8 +163,13 @@ int main(void) {
     if (errorCode) {
         return errorCode;
     }
-    
-    bool buffer[8] = {false};
+
+    FILE* file = fopen("testFile.txt", "w");
+    for (int i = 0; i < 256; ++i) {
+        writeInt(file, arrayOfFrequencies[i]);
+    }
+    writeInt(file, strlen(string));
+    bool buffer[8] = { false };
     int bufferIndex = 0;
     for (int i = 0; string[i] != '\0'; ++i) {
         CodeEntry entry = codeTable[string[i]];
@@ -160,9 +181,15 @@ int main(void) {
                 for (int k = 0; k < 8; ++k) {
                     bufferValue |= buffer[k] << k;
                 }
-                printf("0x%02X ", bufferValue);
+                fputc(bufferValue, file);
                 bufferIndex = 0;
             }
         }
     }
+    unsigned char bufferValue = '\0';
+    for (int k = 0; k < 8; ++k) {
+        bufferValue |= buffer[k] << k;
+    }
+    fputc(bufferValue, file);
+    fclose(file);
 }
