@@ -21,4 +21,4 @@ NodeValue getValue(Node* node, bool* errorCode);
 
 void setValue(Node* node, NodeValue value, bool* errorCode);
 
-void disposeNode(Node* node, bool* errorCode);
+void disposeNode(Node* node);

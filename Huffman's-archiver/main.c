@@ -121,6 +121,22 @@ void writeToCodeTable(Node* currentNode, bool* currentCode, int currentCodeLengt
     writeToCodeTable(getRightChild(currentNode, errorCode), currentCode, currentCodeLength + 1, codeTable, errorCode);
 }
 
+void writeInt(FILE* file, int value) {
+    char *array[4] = &value;
+    for (int i = 0; i < 4; ++i) {
+        fputc(array[i], file);
+    }
+}
+
+int readInt(FILE* file) {
+    char array[4] = { '\0' };
+    for (int i = 0; i < 4; ++i) {
+        array[i] = fgetc(file);
+    }
+    int value = (int)array;
+    return value;
+}
+
 int main(void) {
     const char* string = "abccccccdeeee";
     int arrayOfFrequencies[256] = { 0 };
@@ -147,7 +163,7 @@ int main(void) {
     if (errorCode) {
         return errorCode;
     }
-    
+
     bool buffer[8] = {false};
     int bufferIndex = 0;
     for (int i = 0; string[i] != '\0'; ++i) {
@@ -165,4 +181,9 @@ int main(void) {
             }
         }
     }
+
+    FILE* file = fopen("testFile.txt", "w");
+    writeInt(file, 0x41424344);
+    fclose(file);
+    file = fopen()
 }
