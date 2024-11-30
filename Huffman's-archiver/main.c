@@ -122,23 +122,22 @@ void writeToCodeTable(Node* currentNode, bool* currentCode, int currentCodeLengt
 }
 
 void writeInt(FILE* file, int value) {
-    char *array[4] = &value;
+    char* array = &value;
     for (int i = 0; i < 4; ++i) {
         fputc(array[i], file);
     }
 }
-
+ 
 int readInt(FILE* file) {
     char array[4] = { '\0' };
     for (int i = 0; i < 4; ++i) {
         array[i] = fgetc(file);
     }
-    int value = (int)array;
+    int value = *((int*)array);
     return value;
 }
 
-int main(void) {
-    const char* string = "abccccccdeeee";
+void encode(const char* string) {
     int arrayOfFrequencies[256] = { 0 };
     bool errorCode = false;
     fillOfArrayOfFrequencies(arrayOfFrequencies, string);
@@ -164,7 +163,12 @@ int main(void) {
         return errorCode;
     }
 
-    bool buffer[8] = {false};
+    FILE* file = fopen("testFile.txt", "w");
+    for (int i = 0; i < 256; ++i) {
+        writeInt(file, arrayOfFrequencies[i]);
+    }
+    writeInt(file, strlen(string));
+    bool buffer[8] = { false };
     int bufferIndex = 0;
     for (int i = 0; string[i] != '\0'; ++i) {
         CodeEntry entry = codeTable[string[i]];
@@ -176,14 +180,59 @@ int main(void) {
                 for (int k = 0; k < 8; ++k) {
                     bufferValue |= buffer[k] << k;
                 }
-                printf("0x%02X ", bufferValue);
+                fputc(bufferValue, file);
                 bufferIndex = 0;
             }
         }
     }
-
-    FILE* file = fopen("testFile.txt", "w");
-    writeInt(file, 0x41424344);
     fclose(file);
-    file = fopen()
+}
+
+char* decode(const char* filename) {
+    int array[256] = { '\0' };
+    FILE* file = fopen(filename, "r");
+    for (int i = 0; i < 256; ++i) {
+        array[i] = readInt(file);
+    }
+    int length = readInt(file);
+    Node* arrayOfNode[256] = { NULL };
+    int errorCode = 0;
+    int notNull = fillOfArrayOfNode(arrayOfNode, array, &errorCode);
+    if (errorCode) {
+        return errorCode;
+    }
+
+    Node* rootNode = getRootNode(arrayOfNode, notNull, &errorCode);
+    if (errorCode) {
+        return errorCode;
+    }
+    Node* currentNode = rootNode;
+    bool buffer[8] = { false };
+    char bufferValue = '\0';
+    while (length > 0) {
+        bufferValue = fgetc(file);
+        for (int i = 0; i < 8; ++i) {
+            buffer[i] = (bufferValue >> i) & 1;
+        }
+        int bufferIndex = 0;
+        while (bufferIndex < 8) {
+            if (getLeftChild(currentNode, &errorCode) == NULL) {
+                printf("%c", getValue(currentNode, &errorCode).value);
+                --length;
+                currentNode = rootNode;
+            }
+            if (buffer[bufferIndex]) {
+                currentNode = getRightChild(currentNode, &errorCode);
+            }
+            else {
+                currentNode = getLeftChild(currentNode, &errorCode);
+            }
+            ++bufferIndex;
+        }
+    }
+}
+
+int main(void) {
+    encode("aaaaabbbbbbdfsdferrr");
+    decode("testFile.txt");
 }
